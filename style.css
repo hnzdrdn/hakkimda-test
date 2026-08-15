@@ -33,7 +33,7 @@ body {
 
     padding: 45px;
 
-    border-radius: 28px;
+    border-radius: 50px;
 
     border: 1px solid rgba(255, 255, 255, 0.7);
 
@@ -52,7 +52,7 @@ h1 {
     font-size: 32px;
     font-weight: 700;
 
-    color: #4b3c42;
+    color: #3d2b32;
 
     margin-bottom: 12px;
 }
@@ -71,7 +71,7 @@ h1 {
 
     font-size: 23px;
 
-    line-height: 1.4;
+    line-height: 1.5;
 
     margin: 25px 0;
 }
@@ -192,17 +192,7 @@ h1 {
 }
 
 
-/* Seçilen cevap işareti */
 
-.answer-btn.selected::after {
-    content: "✓";
-
-    float: right;
-
-    font-size: 19px;
-
-    font-weight: bold;
-}
 
 
 /* Genel buton */
