@@ -271,8 +271,13 @@ const questionNumber = document.getElementById("question-number");
 const progressBar = document.getElementById("progress-bar");
 const correctAnswers = document.getElementById("correct-answers");
 
-startButton.addEventListener("click", startQuiz);
-createTestButton.addEventListener("click", startCreatingTest);
+if (startButton) {
+    startButton.addEventListener("click", startQuiz);
+}
+
+if (createTestButton) {
+    createTestButton.addEventListener("click", startCreatingTest);
+}
 
 
 function startQuiz() {
