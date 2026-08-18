@@ -658,3 +658,6 @@ button {
     box-shadow:
         0 5px 12px rgba(142, 104, 119, 0.18);
 }
+#create-test {
+    display: none;
+}
