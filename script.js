@@ -552,143 +552,28 @@ function showCorrectAnswers() {
         });
 
 }
-
-async function saveQuizResult(friendName, score, percentage, answers) {
-
-    const { data, error } = await supabaseClient
-        .from("quiz_results")
-        .insert([
-            {
-                name: friendName.trim(),
-                score: score,
-                percentage: percentage,
-                answers: answers,
-                test_id: activeTestId
-            }
-        ]);
-
-    if (error) {
-        console.error("Sonuç kaydedilemedi:", error);
-        alert("Sonuç kaydedilirken bir hata oluştu.");
-        return;
-    }
-
-    console.log("Sonuç başarıyla kaydedildi!");
-}
-
-function startCreatingTest() {
-
-    creatorName = prompt("Adın nedir?");
-
-    if (!creatorName || creatorName.trim() === "") {
-        alert("Lütfen adını gir.");
-        return;
-    }
-
-    createQuestionIndex = 0;
-    creatorAnswers = [];
-    creatorSelectedAnswer = null;
-
-    startButton.style.display = "none";
-    createTestButton.style.display = "none";
-
-    createTest.style.display = "block";
-
-    showCreateQuestion();
-}
-function showCreateQuestion() {
-
-    createAnswerButtons.innerHTML = "";
-    creatorSelectedAnswer = null;
-
-    createNextButton.style.display = "none";
-
-    const question = questions[createQuestionIndex];
-
-    createQuestionNumber.innerText =
-        `Soru ${createQuestionIndex + 1} / ${questions.length}`;
-
-    createQuestion.innerText =
-        question.question;
-
-    question.answers.forEach((answer, index) => {
-
-        const button = document.createElement("button");
-
-        button.innerText = answer;
-        button.classList.add("answer-btn");
-
-        button.addEventListener("click", () => {
-
-            const allButtons =
-                createAnswerButtons.querySelectorAll(".answer-btn");
-
-            allButtons.forEach(btn => {
-                btn.classList.remove("selected");
-            });
-
-            button.classList.add("selected");
-
-            creatorSelectedAnswer = index;
-
-            createNextButton.style.display = "block";
-        });
-
-        createAnswerButtons.appendChild(button);
-    });
-}
-createNextButton.addEventListener("click", () => {
-
-    creatorAnswers.push(creatorSelectedAnswer);
-
-    createQuestionIndex++;
-
-    if (createQuestionIndex < questions.length) {
-
-        showCreateQuestion();
-
-    } else {
-
-        finishCreatingTest();
-    }
-});
 async function loadSharedTest() {
 
     const params = new URLSearchParams(window.location.search);
     const testId = params.get("test");
 
-    // Linkte test ID yoksa normal ana sayfa çalışmaya devam etsin
+    // Normal site açıldıysa hiçbir şey yapma
     if (!testId) {
         return;
     }
 
-    // Bu linkin hangi teste ait olduğunu kaydet
+    // Bu testin ID'sini kaydet
     activeTestId = testId;
 
-    // Paylaşılan test açıldığında ana sayfadaki bölümleri gizle
-    if (startButton) {
-        startButton.style.display = "none";
-    }
+    // Paylaşılan testte sadece başlangıç ekranı görünsün
+    startButton.style.display = "block";
+    createTestButton.style.display = "none";
 
-    if (createTestButton) {
-        createTestButton.style.display = "none";
-    }
-
-    if (createTest) {
-        createTest.style.display = "none";
-    }
-
-    if (quiz) {
-        quiz.style.display = "none";
-    }
-
-    if (result) {
-        result.style.display = "none";
-    }
-
-    if (correctAnswers) {
-        correctAnswers.style.display = "none";
-    }
+    // Test henüz başlamadığı için bunlar gizli olsun
+    quiz.style.display = "none";
+    createTest.style.display = "none";
+    result.style.display = "none";
+    correctAnswers.style.display = "none";
 
     // Supabase'den bu teste ait bilgileri getir
     const { data, error } = await supabaseClient
@@ -713,16 +598,6 @@ async function loadSharedTest() {
     // Başlığı test sahibinin adına göre değiştir
     document.querySelector("h1").innerText =
         `${data.owner_name}'yi Ne Kadar Tanıyorsun? 😎`;
-
-    // Testi başlatmak için başlangıç ekranını tekrar göster
-    if (quiz) {
-        quiz.style.display = "block";
-    }
-
-    // Arkadaşın testi başlatabilsin
-    if (startButton) {
-        startButton.style.display = "block";
-    }
 }
 
 loadSharedTest();
