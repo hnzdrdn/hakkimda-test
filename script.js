@@ -652,92 +652,45 @@ createNextButton.addEventListener("click", () => {
         finishCreatingTest();
     }
 });
-async function finishCreatingTest() {
-
-    createNextButton.disabled = true;
-
-    const { data, error } = await supabaseClient
-        .from("test")
-        .insert([
-            {
-                owner_name: creatorName.trim(),
-                answers: creatorAnswers
-            }
-        ])
-        .select()
-        .single();
-
-    createNextButton.disabled = false;
-
-    if (error) {
-        console.error("Test oluşturulamadı:", error);
-
-        alert(
-            "Test oluşturulurken bir hata oluştu.\n\n" +
-            error.message
-        );
-
-        return;
-    }
-
-    const testId = data.id;
-
-    const testLink =
-        `${window.location.origin}${window.location.pathname}?test=${testId}`;
-
-    createTest.innerHTML = `
-        <div class="test-created">
-
-            <h2>🎉 Testin Hazır!</h2>
-
-            <p>
-                ${creatorName.trim()}, testin başarıyla oluşturuldu.
-            </p>
-
-            <p>Bu linki arkadaşlarınla paylaşabilirsin:</p>
-
-            <div class="test-link-box">
-                ${testLink}
-            </div>
-
-            <button id="copy-link-btn">
-                🔗 LİNKİ KOPYALA
-            </button>
-
-            <button id="new-test-btn">
-                ✨ YENİ TEST OLUŞTUR
-            </button>
-
-        </div>
-    `;
-
-    document
-        .getElementById("copy-link-btn")
-        .addEventListener("click", async () => {
-
-            await navigator.clipboard.writeText(testLink);
-
-            document.getElementById("copy-link-btn").innerText =
-                "✅ LİNK KOPYALANDI!";
-        });
-
-    document
-        .getElementById("new-test-btn")
-        .addEventListener("click", () => {
-            location.reload();
-        });
-}
 async function loadSharedTest() {
 
     const params = new URLSearchParams(window.location.search);
     const testId = params.get("test");
 
-    // Linkte test ID yoksa normal test devam etsin
+    // Linkte test ID yoksa normal ana sayfa çalışmaya devam etsin
     if (!testId) {
         return;
     }
+
+    // Bu linkin hangi teste ait olduğunu kaydet
     activeTestId = testId;
 
+    // Paylaşılan test açıldığında ana sayfadaki bölümleri gizle
+    if (startButton) {
+        startButton.style.display = "none";
+    }
+
+    if (createTestButton) {
+        createTestButton.style.display = "none";
+    }
+
+    if (createTest) {
+        createTest.style.display = "none";
+    }
+
+    if (quiz) {
+        quiz.style.display = "none";
+    }
+
+    if (result) {
+        result.style.display = "none";
+    }
+
+    if (correctAnswers) {
+        correctAnswers.style.display = "none";
+    }
+
+    // Supabase'den bu teste ait bilgileri getir
     const { data, error } = await supabaseClient
         .from("test")
         .select("owner_name, answers")
@@ -752,13 +705,24 @@ async function loadSharedTest() {
 
     console.log("Paylaşılan test:", data);
 
-    // Bu testin sahibinin cevaplarını doğru cevap yap
+    // Test sahibinin cevaplarını doğru cevap olarak ayarla
     questions.forEach((question, index) => {
         question.correct = data.answers[index];
     });
 
-    // Başlığı test sahibine göre değiştir
+    // Başlığı test sahibinin adına göre değiştir
     document.querySelector("h1").innerText =
         `${data.owner_name}'yi Ne Kadar Tanıyorsun? 😎`;
+
+    // Testi başlatmak için başlangıç ekranını tekrar göster
+    if (quiz) {
+        quiz.style.display = "block";
+    }
+
+    // Arkadaşın testi başlatabilsin
+    if (startButton) {
+        startButton.style.display = "block";
+    }
 }
+
 loadSharedTest();
