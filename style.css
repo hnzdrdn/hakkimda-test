@@ -661,3 +661,9 @@ button {
 #create-test {
     display: none;
 }
+#quiz,
+#create-test,
+#result,
+#correct-answers {
+    display: none;
+}
