@@ -1,16 +1,10 @@
 <!DOCTYPE html>
 <html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hakkımda Ne Kadar Bilgi Sahibisin</title>
 
-    <link rel="stylesheet" href="style.css">
-</head><!DOCTYPE html>
-<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Hakkımda Ne Kadar Bilgi Sahibisin</title>
 
     <link rel="stylesheet" href="style.css">
@@ -24,99 +18,78 @@
 
         <p>Hazırsan başlayalım!</p>
 
-        <button id="start-btn">BAŞLA</button>
-        <button id="create-test-btn">✨ KENDİ TESTİMİ OLUŞTUR</button>
+        <!-- Normal testi başlat -->
+        <button id="start-btn">
+            BAŞLA
+        </button>
 
-        <div id="quiz" style="display: none;">
-
-    <p id="question-number">Soru 1 / 20</p>
-
-    <div class="progress-container">
-        <div id="progress-bar"></div>
-    </div>
-
-    <h2 id="question"></h2>
-
-    <div id="answer-buttons"></div>
-
-    <button id="next-btn">Sonraki Soru</button>
-
-</div>
-
-        <div id="result" style="display: none;"></div>
-        <div id="correct-answers" style="display: none;"></div>
-        <div id="create-test" style="display: none;">
-
-    <h2>Kendi Testini Oluştur ✨</h2>
-
-    <p>
-        Kendin hakkında doğru olduğunu düşündüğün cevapları seç.
-        Arkadaşların daha sonra seni bu cevaplara göre test edecek. 💕
-    </p>
-
-    <p id="create-question-number"></p>
-
-    <h3 id="create-question"></h3>
-
-    <div id="create-answer-buttons"></div>
-
-    <button id="create-next-btn">İleri</button>
-
-</div>
-
-    </div>
+        <!-- Kendi testini oluştur -->
+        <button id="create-test-btn">
+            ✨ KENDİ TESTİMİ OLUŞTUR
+        </button>
 
 
+        <!-- ARKADAŞININ TESTİ -->
+        <div id="quiz">
+
+            <p id="question-number">
+                Soru 1 / 20
+            </p>
+
+            <div class="progress-container">
+                <div id="progress-bar"></div>
+            </div>
+
+            <h2 id="question"></h2>
+
+            <div id="answer-buttons"></div>
+
+            <button id="next-btn">
+                Sonraki Soru
+            </button>
+
+        </div>
 
 
+        <!-- SONUÇ -->
+        <div id="result"></div>
 
 
-
-   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="script.js"></script>
-</body>
-</html>
+        <!-- DOĞRU CEVAPLAR -->
+        <div id="correct-answers"></div>
 
 
-<body>
+        <!-- KENDİ TESTİNİ OLUŞTURMA -->
+        <div id="create-test">
 
-    <div class="quiz-container">
+            <h2>Kendi Testini Oluştur ✨</h2>
 
-        <h1>Hanzade'yi Ne Kadar Tanıyorum? 😎</h1>
+            <p>
+                Kendin hakkında doğru olduğunu düşündüğün cevapları seç.
+                Arkadaşların daha sonra seni bu cevaplara göre test edecek. 💕
+            </p>
 
-        <p>Hazırsan başlayalım canımm!</p>
+            <p id="create-question-number"></p>
 
-        <button id="start-btn">BAŞLIYORUZ💅</button>
+            <h3 id="create-question"></h3>
 
-        <div id="quiz" style="display: none;">
+            <div id="create-answer-buttons"></div>
 
-    <p id="question-number">Soru 1 / 20</p>
+            <button id="create-next-btn">
+                İleri
+            </button>
 
-    <div class="progress-container">
-        <div id="progress-bar"></div>
-    </div>
-
-    <h2 id="question"></h2>
-
-    <div id="answer-buttons"></div>
-
-    <button id="next-btn">Next Hayatım</button>
-
-</div>
-
-        <div id="result" style="display: none;"></div>
-        <div id="correct-answers" style="display: none;"></div>
+        </div>
 
     </div>
 
 
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
-
-
-
-    
+    <!-- Senin JavaScript dosyan -->
     <script src="script.js"></script>
 
 </body>
+
 </html>
