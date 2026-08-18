@@ -1,13 +1,15 @@
-
 const SUPABASE_URL = "https://sqxvhtlkgnlnqsuojalm.supabase.co";
 const SUPABASE_KEY = "sb_publishable_yGI-vH9Ocr2Kfga-GR_Shw_fONA434L";
+
 const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
 );
 
 
-
+// =====================================================
+// SORULAR
+// =====================================================
 
 const questions = [
 
@@ -233,19 +235,34 @@ const questions = [
 
 ];
 
+
+// =====================================================
+// DEĞİŞKENLER
+// =====================================================
+
 let currentQuestion = 0;
 let score = 0;
 let selectedAnswer = null;
 let userAnswers = [];
+
 let friendName = "";
+
 let activeTestId = null;
+
 let createQuestionIndex = 0;
 let creatorAnswers = [];
 let creatorName = "";
 let creatorSelectedAnswer = null;
 
+
+// =====================================================
+// HTML ELEMENTLERİ
+// =====================================================
+
 const startButton = document.getElementById("start-btn");
+
 const quiz = document.getElementById("quiz");
+
 const createTestButton =
     document.getElementById("create-test-btn");
 
@@ -263,117 +280,205 @@ const createAnswerButtons =
 
 const createNextButton =
     document.getElementById("create-next-btn");
-const questionElement = document.getElementById("question");
-const answerButtons = document.getElementById("answer-buttons");
-const nextButton = document.getElementById("next-btn");
-const result = document.getElementById("result");
-const questionNumber = document.getElementById("question-number");
-const progressBar = document.getElementById("progress-bar");
-const correctAnswers = document.getElementById("correct-answers");
+
+const questionElement =
+    document.getElementById("question");
+
+const answerButtons =
+    document.getElementById("answer-buttons");
+
+const nextButton =
+    document.getElementById("next-btn");
+
+const result =
+    document.getElementById("result");
+
+const questionNumber =
+    document.getElementById("question-number");
+
+const progressBar =
+    document.getElementById("progress-bar");
+
+const correctAnswers =
+    document.getElementById("correct-answers");
+
+
+// =====================================================
+// BUTONLAR
+// =====================================================
 
 if (startButton) {
     startButton.addEventListener("click", startQuiz);
 }
 
 if (createTestButton) {
-    createTestButton.addEventListener("click", startCreatingTest);
+    createTestButton.addEventListener(
+        "click",
+        startCreatingTest
+    );
 }
 
+
+// =====================================================
+// NORMAL TESTİ BAŞLAT
+// =====================================================
 
 function startQuiz() {
 
     friendName = prompt("Adın nedir?");
 
     if (!friendName || friendName.trim() === "") {
+
         alert("Lütfen adını gir.");
+
         return;
     }
 
     startButton.style.display = "none";
 
+    createTestButton.style.display = "none";
+
     quiz.style.display = "block";
+
+    createTest.style.display = "none";
 
     result.style.display = "none";
 
     correctAnswers.style.display = "none";
 
     currentQuestion = 0;
+
     score = 0;
+
     userAnswers = [];
 
     showQuestion();
 }
 
+
+// =====================================================
+// NORMAL TEST SORUSUNU GÖSTER
+// =====================================================
+
 function showQuestion() {
 
     answerButtons.innerHTML = "";
+
     selectedAnswer = null;
-nextButton.style.display = "none";
- questionNumber.innerText =
+
+    nextButton.style.display = "none";
+
+    questionNumber.innerText =
         `Soru ${currentQuestion + 1} / ${questions.length}`;
 
     const progress =
         ((currentQuestion + 1) / questions.length) * 100;
 
-    progressBar.style.width = progress + "%";
-    const question = questions[currentQuestion];
+    progressBar.style.width =
+        progress + "%";
+
+    const question =
+        questions[currentQuestion];
 
     questionElement.innerText =
-        (currentQuestion + 1) + ". " + question.question;
+        (currentQuestion + 1) +
+        ". " +
+        question.question;
 
 
     question.answers.forEach((answer, index) => {
 
-        const button = document.createElement("button");
+        const button =
+            document.createElement("button");
 
         button.innerText = answer;
 
         button.classList.add("answer-btn");
 
-       button.addEventListener("click", () => {
 
-    const allButtons = document.querySelectorAll(".answer-btn");
+        button.addEventListener("click", () => {
 
-    allButtons.forEach(btn => {
-        btn.classList.remove("selected");
-    });
+            const allButtons =
+                document.querySelectorAll(".answer-btn");
 
-    button.classList.add("selected");
+            allButtons.forEach(btn => {
 
-    selectedAnswer = index;
+                btn.classList.remove("selected");
 
-    nextButton.style.display = "block";
-});
+            });
+
+
+            button.classList.add("selected");
+
+            selectedAnswer = index;
+
+            nextButton.style.display = "block";
+
+        });
+
 
         answerButtons.appendChild(button);
 
     });
+
 }
 
 
-nextButton.addEventListener("click", () => {
+// =====================================================
+// NORMAL TEST - SONRAKİ SORU
+// =====================================================
 
-    userAnswers.push(selectedAnswer);
+if (nextButton) {
 
-    if (selectedAnswer === questions[currentQuestion].correct) {
-        score++;
-    }
+    nextButton.addEventListener("click", () => {
 
-    currentQuestion++;
+        if (selectedAnswer === null) {
 
-    if (currentQuestion < questions.length) {
+            alert("Lütfen bir cevap seç.");
 
-        showQuestion();
+            return;
+        }
 
-    } else {
 
-        showResult();
+        userAnswers.push(selectedAnswer);
 
-    }
 
-});
+        if (
+            selectedAnswer ===
+            questions[currentQuestion].correct
+        ) {
+
+            score++;
+
+        }
+
+
+        currentQuestion++;
+
+
+        if (
+            currentQuestion <
+            questions.length
+        ) {
+
+            showQuestion();
+
+        } else {
+
+            showResult();
+
+        }
+
+    });
+
+}
+
+
+// =====================================================
+// SONUÇ EKRANI
+// =====================================================
+
 function showResult() {
-   
 
     quiz.style.display = "none";
 
@@ -382,12 +487,21 @@ function showResult() {
     correctAnswers.style.display = "none";
 
 
-const percentage = 
-    Math.round((score / questions.length) * 100);
+    const percentage =
+        Math.round(
+            (score / questions.length) * 100
+        );
 
-saveQuizResult(friendName, score, percentage, userAnswers);
 
-let message = "";
+    saveQuizResult(
+        friendName,
+        score,
+        percentage,
+        userAnswers
+    );
+
+
+    let message = "";
 
 
     if (percentage >= 90) {
@@ -398,7 +512,7 @@ let message = "";
     } else if (percentage >= 75) {
 
         message =
-            "Hiç yoktan iyidir. 💃​";
+            "Hiç yoktan iyidir. 💃";
 
     } else if (percentage >= 50) {
 
@@ -419,7 +533,7 @@ let message = "";
 
         <h3>
             ${questions.length} sorudan
-            ${score} doğru AFERİN💐​!
+            ${score} doğru AFERİN💐!
         </h3>
 
         <p>
@@ -440,19 +554,31 @@ let message = "";
         <button id="restart-btn">
             🔄 Tekrar Test Yap
         </button>
+
     `;
 
 
     document
         .getElementById("show-answers-btn")
-        .addEventListener("click", showCorrectAnswers);
+        .addEventListener(
+            "click",
+            showCorrectAnswers
+        );
 
 
     document
         .getElementById("restart-btn")
-        .addEventListener("click", startQuiz);
+        .addEventListener(
+            "click",
+            startQuiz
+        );
 
 }
+
+
+// =====================================================
+// DOĞRU CEVAPLARI GÖSTER
+// =====================================================
 
 function showCorrectAnswers() {
 
@@ -470,9 +596,11 @@ function showCorrectAnswers() {
 
     questions.forEach((question, index) => {
 
-        const userAnswerIndex = userAnswers[index];
+        const userAnswerIndex =
+            userAnswers[index];
 
-        const correctAnswerIndex = question.correct;
+        const correctAnswerIndex =
+            question.correct;
 
 
         const userAnswer =
@@ -482,7 +610,10 @@ function showCorrectAnswers() {
             question.answers[correctAnswerIndex];
 
 
-        if (userAnswerIndex === correctAnswerIndex) {
+        if (
+            userAnswerIndex ===
+            correctAnswerIndex
+        ) {
 
             answersHTML += `
 
@@ -490,7 +621,8 @@ function showCorrectAnswers() {
 
                     <p>
                         <strong>
-                            ${index + 1}. ${question.question}
+                            ${index + 1}.
+                            ${question.question}
                         </strong>
                     </p>
 
@@ -511,7 +643,8 @@ function showCorrectAnswers() {
 
                     <p>
                         <strong>
-                            ${index + 1}. ${question.question}
+                            ${index + 1}.
+                            ${question.question}
                         </strong>
                     </p>
 
@@ -543,66 +676,461 @@ function showCorrectAnswers() {
     `;
 
 
-    correctAnswers.innerHTML = answersHTML;
+    correctAnswers.innerHTML =
+        answersHTML;
 
 
     document
         .getElementById("back-result-btn")
         .addEventListener("click", () => {
 
-            correctAnswers.style.display = "none";
+            correctAnswers.style.display =
+                "none";
 
-            result.style.display = "block";
+            result.style.display =
+                "block";
 
         });
 
 }
+
+
+// =====================================================
+// KENDİ TESTİNİ OLUŞTUR
+// =====================================================
+
+function startCreatingTest() {
+
+    creatorName =
+        prompt("Adın nedir?");
+
+
+    if (
+        !creatorName ||
+        creatorName.trim() === ""
+    ) {
+
+        alert("Lütfen adını gir.");
+
+        return;
+    }
+
+
+    // Ana butonları gizle
+
+    startButton.style.display =
+        "none";
+
+    createTestButton.style.display =
+        "none";
+
+
+    // Diğer ekranları gizle
+
+    quiz.style.display =
+        "none";
+
+    result.style.display =
+        "none";
+
+    correctAnswers.style.display =
+        "none";
+
+
+    // Kendi test ekranını aç
+
+    createTest.style.display =
+        "block";
+
+
+    // Baştan başla
+
+    createQuestionIndex = 0;
+
+    creatorAnswers = [];
+
+    creatorSelectedAnswer = null;
+
+
+    showCreateQuestion();
+
+}
+
+
+// =====================================================
+// KENDİ TESTİNDE SORU GÖSTER
+// =====================================================
+
+function showCreateQuestion() {
+
+    createAnswerButtons.innerHTML =
+        "";
+
+    creatorSelectedAnswer =
+        null;
+
+    createNextButton.style.display =
+        "none";
+
+
+    createQuestionNumber.innerText =
+        `Soru ${createQuestionIndex + 1} / ${questions.length}`;
+
+
+    const question =
+        questions[createQuestionIndex];
+
+
+    createQuestion.innerText =
+        question.question;
+
+
+    question.answers.forEach(
+        (answer, index) => {
+
+            const button =
+                document.createElement("button");
+
+
+            button.innerText =
+                answer;
+
+
+            button.classList.add(
+                "answer-btn"
+            );
+
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    const allButtons =
+                        createAnswerButtons
+                            .querySelectorAll(
+                                ".answer-btn"
+                            );
+
+
+                    allButtons.forEach(
+                        btn => {
+
+                            btn.classList.remove(
+                                "selected"
+                            );
+
+                        }
+                    );
+
+
+                    button.classList.add(
+                        "selected"
+                    );
+
+
+                    creatorSelectedAnswer =
+                        index;
+
+
+                    createNextButton.style.display =
+                        "block";
+
+                }
+            );
+
+
+            createAnswerButtons.appendChild(
+                button
+            );
+
+        }
+    );
+
+}
+
+
+// =====================================================
+// KENDİ TESTİ - İLERİ BUTONU
+// =====================================================
+
+if (createNextButton) {
+
+    createNextButton.addEventListener(
+        "click",
+        () => {
+
+            if (
+                creatorSelectedAnswer ===
+                null
+            ) {
+
+                alert(
+                    "Lütfen bir cevap seç."
+                );
+
+                return;
+            }
+
+
+            creatorAnswers.push(
+                creatorSelectedAnswer
+            );
+
+
+            createQuestionIndex++;
+
+
+            if (
+                createQuestionIndex <
+                questions.length
+            ) {
+
+                showCreateQuestion();
+
+            } else {
+
+                finishCreatingTest();
+
+            }
+
+        }
+    );
+
+}
+
+
+// =====================================================
+// KENDİ TESTİNİ TAMAMLA
+// =====================================================
+
+function finishCreatingTest() {
+
+    createTest.style.display =
+        "none";
+
+    result.style.display =
+        "block";
+
+
+    result.innerHTML = `
+
+        <h2>Testin Hazır! 🎉</h2>
+
+        <p>
+            ${creatorName},
+            testini başarıyla oluşturdun.
+        </p>
+
+        <p>
+            Arkadaşların artık seni
+            ne kadar tanıdığını test edebilir. 💕
+        </p>
+
+        <button id="new-test-btn">
+            ✨ Yeni Test Oluştur
+        </button>
+
+    `;
+
+
+    document
+        .getElementById("new-test-btn")
+        .addEventListener(
+            "click",
+            () => {
+
+                result.style.display =
+                    "none";
+
+                createTest.style.display =
+                    "block";
+
+
+                createQuestionIndex =
+                    0;
+
+                creatorAnswers =
+                    [];
+
+                creatorSelectedAnswer =
+                    null;
+
+
+                showCreateQuestion();
+
+            }
+        );
+
+}
+
+
+// =====================================================
+// SUPABASE - NORMAL TEST SONUCUNU KAYDET
+// =====================================================
+
+async function saveQuizResult(
+    name,
+    score,
+    percentage,
+    answers
+) {
+
+    try {
+
+        const { data, error } =
+            await supabaseClient
+                .from("results")
+                .insert([
+                    {
+                        friend_name: name,
+                        score: score,
+                        percentage: percentage,
+                        answers: answers,
+                        test_id: activeTestId
+                    }
+                ]);
+
+
+        if (error) {
+
+            console.error(
+                "Sonuç kaydedilemedi:",
+                error
+            );
+
+            return;
+        }
+
+
+        console.log(
+            "Sonuç başarıyla kaydedildi:",
+            data
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Supabase bağlantı hatası:",
+            error
+        );
+
+    }
+
+}
+
+
+// =====================================================
+// PAYLAŞILAN TESTİ YÜKLE
+// =====================================================
+
 async function loadSharedTest() {
 
-    const params = new URLSearchParams(window.location.search);
-    const testId = params.get("test");
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const testId =
+        params.get("test");
+
 
     // Normal site açıldıysa hiçbir şey yapma
+
     if (!testId) {
+
         return;
+
     }
 
-    // Bu testin ID'sini kaydet
-    activeTestId = testId;
 
-    // Paylaşılan testte sadece başlangıç ekranı görünsün
-    startButton.style.display = "block";
-    createTestButton.style.display = "block";
+    // Test ID'sini kaydet
 
-    // Test henüz başlamadığı için bunlar gizli olsun
-    quiz.style.display = "none";
-    createTest.style.display = "none";
-    result.style.display = "none";
-    correctAnswers.style.display = "none";
+    activeTestId =
+        testId;
 
-    // Supabase'den bu teste ait bilgileri getir
-    const { data, error } = await supabaseClient
-        .from("test")
-        .select("owner_name, answers")
-        .eq("id", testId)
-        .single();
+
+    // Paylaşılan testte başlangıç ekranı
+
+    startButton.style.display =
+        "block";
+
+    createTestButton.style.display =
+        "block";
+
+
+    quiz.style.display =
+        "none";
+
+    createTest.style.display =
+        "none";
+
+    result.style.display =
+        "none";
+
+    correctAnswers.style.display =
+        "none";
+
+
+    // Supabase'den test bilgilerini getir
+
+    const { data, error } =
+        await supabaseClient
+            .from("test")
+            .select(
+                "owner_name, answers"
+            )
+            .eq("id", testId)
+            .single();
+
 
     if (error) {
-        console.error("Test yüklenemedi:", error);
-        alert("Bu test bulunamadı.");
+
+        console.error(
+            "Test yüklenemedi:",
+            error
+        );
+
+        alert(
+            "Bu test bulunamadı."
+        );
+
         return;
+
     }
 
-    console.log("Paylaşılan test:", data);
 
-    // Test sahibinin cevaplarını doğru cevap olarak ayarla
-    questions.forEach((question, index) => {
-        question.correct = data.answers[index];
-    });
+    console.log(
+        "Paylaşılan test:",
+        data
+    );
 
-    // Başlığı test sahibinin adına göre değiştir
-    document.querySelector("h1").innerText =
+
+    // Test sahibinin cevaplarını
+    // doğru cevap olarak ayarla
+
+    questions.forEach(
+        (question, index) => {
+
+            question.correct =
+                data.answers[index];
+
+        }
+    );
+
+
+    // Başlığı değiştir
+
+    document
+        .querySelector("h1")
+        .innerText =
         `${data.owner_name}'yi Ne Kadar Tanıyorsun? 😎`;
+
 }
+
+
+// =====================================================
+// SAYFA AÇILINCA PAYLAŞILAN TESTİ KONTROL ET
+// =====================================================
 
 loadSharedTest();
