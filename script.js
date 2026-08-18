@@ -567,7 +567,7 @@ async function loadSharedTest() {
 
     // Paylaşılan testte sadece başlangıç ekranı görünsün
     startButton.style.display = "block";
-    createTestButton.style.display = "none";
+    createTestButton.style.display = "block";
 
     // Test henüz başlamadığı için bunlar gizli olsun
     quiz.style.display = "none";
