@@ -311,6 +311,40 @@ if (startButton) {
     startButton.addEventListener("click", startQuiz);
 }
 
+
+// KENDİ TESTİNİ OLUŞTUR BUTONU
+
+function startCreatingTest() {
+
+    creatorName = prompt("Adın nedir?");
+
+    if (!creatorName || creatorName.trim() === "") {
+        alert("Lütfen adını gir.");
+        return;
+    }
+
+    startButton.style.display = "none";
+
+    createTestButton.style.display = "none";
+
+    quiz.style.display = "none";
+
+    result.style.display = "none";
+
+    correctAnswers.style.display = "none";
+
+    createTest.style.display = "block";
+
+    createQuestionIndex = 0;
+
+    creatorAnswers = [];
+
+    creatorSelectedAnswer = null;
+
+    showCreateQuestion();
+}
+
+
 if (createTestButton) {
     createTestButton.addEventListener(
         "click",
