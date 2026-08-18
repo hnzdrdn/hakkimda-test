@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Hakkımda Ne Kadar Bilgi Sahibisin</title>
+    <title>Beni Ne Kadar Tanıyorsun?</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -18,18 +18,19 @@
 
         <p>Hazırsan başlayalım!</p>
 
-        <!-- Normal testi başlat -->
+        <!-- ANA BUTONLAR -->
+
         <button id="start-btn">
             BAŞLA
         </button>
 
-        <!-- Kendi testini oluştur -->
         <button id="create-test-btn">
             ✨ KENDİ TESTİMİ OLUŞTUR
         </button>
 
 
-        <!-- ARKADAŞININ TESTİ -->
+        <!-- NORMAL TEST -->
+
         <div id="quiz">
 
             <p id="question-number">
@@ -37,7 +38,9 @@
             </p>
 
             <div class="progress-container">
+
                 <div id="progress-bar"></div>
+
             </div>
 
             <h2 id="question"></h2>
@@ -52,21 +55,27 @@
 
 
         <!-- SONUÇ -->
+
         <div id="result"></div>
 
 
         <!-- DOĞRU CEVAPLAR -->
+
         <div id="correct-answers"></div>
 
 
         <!-- KENDİ TESTİNİ OLUŞTURMA -->
+
         <div id="create-test">
 
-            <h2>Kendi Testini Oluştur ✨</h2>
+            <h2>
+                Kendi Testini Oluştur ✨
+            </h2>
 
             <p>
-                Kendin hakkında doğru olduğunu düşündüğün cevapları seç.
-                Arkadaşların daha sonra seni bu cevaplara göre test edecek. 💕
+                Kendin hakkında doğru olduğunu düşündüğün
+                cevapları seç. Arkadaşların daha sonra seni
+                bu cevaplara göre test edecek. 💕
             </p>
 
             <p id="create-question-number"></p>
@@ -84,10 +93,12 @@
     </div>
 
 
-    <!-- Supabase -->
+    <!-- SUPABASE -->
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <!-- Senin JavaScript dosyan -->
+    <!-- SENİN JAVASCRIPT DOSYAN -->
+
     <script src="script.js"></script>
 
 </body>
